@@ -1,4 +1,4 @@
-package hilldl.org.example.shout;
+package hilldl.org.example.shout.entities;
 
 import androidx.annotation.NonNull;
 

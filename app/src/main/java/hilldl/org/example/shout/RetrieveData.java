@@ -1,6 +1,5 @@
 package hilldl.org.example.shout;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,6 +13,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import hilldl.org.example.shout.entities.Post;
 
 public class RetrieveData extends AsyncTask<Void, Void, List<Post>> {
     private static final String TAG = "RetrieveData";

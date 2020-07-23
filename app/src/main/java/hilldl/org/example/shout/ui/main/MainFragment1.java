@@ -1,5 +1,9 @@
 package hilldl.org.example.shout.ui.main;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -29,10 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import hilldl.org.example.shout.MainAdapter;
-import hilldl.org.example.shout.Post;
+import hilldl.org.example.shout.entities.Post;
 import hilldl.org.example.shout.R;
 import hilldl.org.example.shout.RetrieveData;
-import hilldl.org.example.shout.User;
+import hilldl.org.example.shout.entities.User;
 
 public class MainFragment1 extends Fragment implements RetrieveData.DataCallBack,
                                                     MainAdapter.AdapterCallbacks {
@@ -66,11 +70,26 @@ public class MainFragment1 extends Fragment implements RetrieveData.DataCallBack
         rv = view.findViewById(R.id.main_rv_list);
         // SwipeRefreshLayout
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                RetrieveData retrieveData = new RetrieveData(db, MainFragment1.this);
+//                retrieveData.execute();
+//            }
+//        });
+
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mViewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
-            public void onRefresh() {
-                RetrieveData retrieveData = new RetrieveData(db, MainFragment1.this);
-                retrieveData.execute();
+            public void onChanged(List<Post> posts) {
+
+             for (int i = 0; i < posts.size(); i++) {
+                 Post dummyPost = posts.get(i);
+                 Log.d(TAG, "onChanged: ****************\n" +
+                                            dummyPost.getPost() +
+                                            "\n***************");
+             }
+
             }
         });
 
@@ -177,6 +196,6 @@ public class MainFragment1 extends Fragment implements RetrieveData.DataCallBack
 
 //        Post testPost = new Post();
 //        testPost.setPost("Testing 2");
-//        testPost.setUser("Test hilldl.org.example.shout.User 2");
+//        testPost.setUser("Test hilldl.org.example.shout.entities.User 2");
 //        DatabaseReference databaseReference = db.getReference();
 //        databaseReference.child(RetrieveData.ALLPOSTS).push().setValue(testPost);

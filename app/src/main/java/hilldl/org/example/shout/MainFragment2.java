@@ -14,11 +14,12 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
 
+import hilldl.org.example.shout.entities.Post;
+import hilldl.org.example.shout.entities.User;
 import hilldl.org.example.shout.ui.main.MainFragment1;
 
 /**
