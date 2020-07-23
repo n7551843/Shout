@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incorrect_login_details">Incorrect login details entered.  Please check your name and password and try again.</string>
+    <string name="tooltip_email_already_used">This email is already in use.  Please Sign up with a new account.</string>
+    <string name="post">Post</string>
+</resources>

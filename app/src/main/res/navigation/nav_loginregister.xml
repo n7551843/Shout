@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_loginregister"
+    app:startDestination="@id/loginFragmentInitialize">
+    <fragment
+        android:id="@+id/fragment_login_first"
+        android:name="hilldl.org.example.shout.LoginFragmentFirst"
+        android:label="fragment_login_first">
+        <action
+            android:id="@+id/action_loginFragmentv2_to_loginFragment_Register"
+            app:destination="@id/fragment_login_second"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_login_second"
+        android:name="hilldl.org.example.shout.LoginFragmentSecond"
+        android:label="fragment_login_second"
+        tools:layout="@layout/login_fragment_second">
+        <action
+            android:id="@+id/action_fragment_login_second_to_fragment_login_first"
+            app:destination="@id/fragment_login_first"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragmentInitialize"
+        android:name="hilldl.org.example.shout.LoginFragmentSplash"
+        android:label="fragment_login_initialize"
+        tools:layout="@layout/login_fragment_splash" >
+        <action
+            android:id="@+id/action_loginFragmentInitialize_to_fragment_login_second"
+            app:destination="@id/fragment_login_first"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+</navigation>

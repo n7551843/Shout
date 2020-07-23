@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "556772535583",
+    "firebase_url": "https://shout-7531d.firebaseio.com",
+    "project_id": "shout-7531d",
+    "storage_bucket": "shout-7531d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556772535583:android:eb96f88ec311ebfce6d42a",
+        "android_client_info": {
+          "package_name": "hilldl.org.example.shout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556772535583-k7vhm0jhjsnelj41eltmcj04ps0a1j7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYk41HH525YKKNDj_ortT56Mcx8rHHV9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556772535583-k7vhm0jhjsnelj41eltmcj04ps0a1j7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
