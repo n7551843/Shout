@@ -78,7 +78,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             super(itemview);
             this.postContent = itemView.findViewById(R.id.post_txtvw_content);
             this.postNickname = itemview.findViewById(R.id.post_txtvw_user);
-            this.postImage = itemview.findViewById(R.id.post_imgvw_profile);
+            this.postImage = itemview.findViewById(R.id.post_imgvw_profile_poster);
             this.selfPostIdentifier = itemview.findViewById(R.id.post_imgvw_person);
         }
     }

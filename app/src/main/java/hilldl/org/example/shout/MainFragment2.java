@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.util.Date;
 import hilldl.org.example.shout.entities.Post;
 import hilldl.org.example.shout.entities.User;
 import hilldl.org.example.shout.ui.main.MainFragment1;
+import hilldl.org.example.shout.ui.main.MainViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +37,7 @@ public class MainFragment2 extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private FirebaseUser mFirebaseUser;
+    private static MainViewModel mViewModel;
 
     public MainFragment2() {
         // Required empty public constructor
@@ -66,6 +69,10 @@ public class MainFragment2 extends Fragment {
         //Get Firebase Database references for posting
         setUpDatabaseForPosting();
 
+        // Get ViewModel to post with.
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+
         mText = view.findViewById(R.id.et_newPost);
         mButton = view.findViewById(R.id.btn_newPost);
 
@@ -84,9 +91,11 @@ public class MainFragment2 extends Fragment {
                 Date currentTime = new Date();
                 post.setDateAndTime(currentTime.toString());
 
+                // Step 3 (new) - insert post with ViewModel
+                mViewModel.insert(post);
 
-                // Step 3 - post the object to the database
-                db.getReference().child(RetrieveData.ALLPOSTS).push().setValue(post);
+//                // Step 3 - post the object to the database
+//                db.getReference().child(RetrieveData.ALLPOSTS).push().setValue(post);
 
                 // Step 4 - Return to other Fragment, which should refresh itself automatically
                 requireActivity().getSupportFragmentManager().beginTransaction()

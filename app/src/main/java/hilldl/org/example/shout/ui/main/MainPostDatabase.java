@@ -69,7 +69,15 @@ public class MainPostDatabase {
         @Override
         protected Void doInBackground(Post... post) {
             Log.d(TAG, "doInBackground: begins");
-            db.getReference().child(RetrieveData.ALLPOSTS).push().setValue(post[0]);
+            String newPost = db.getReference().child(RetrieveData.ALLPOSTS).push().getKey();
+                   if (newPost != null) {
+                       Log.d(TAG, "doInBackground: posting new post with key retrieved");
+                       post[0].setPostID(newPost);
+                       db.getReference().child(ALLPOSTS).child(newPost).setValue(post[0]);
+
+                   } else {
+                       Log.d(TAG, "doInBackground: cannot post as newPost key as null");
+                   }
             return null;
         }
 

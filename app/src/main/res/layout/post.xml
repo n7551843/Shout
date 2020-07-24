@@ -25,18 +25,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:maxLength="56"
                 android:maxLines="1"
-                app:layout_constraintStart_toEndOf="@+id/post_imgvw_profile"
-                app:layout_constraintTop_toTopOf="@+id/post_imgvw_profile"
+                app:layout_constraintStart_toEndOf="@+id/post_imgvw_profile_poster"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="username goes here" />
 
             <TextView
                 android:id="@+id/post_txtvw_content"
                 android:layout_width="wrap_content"
-                android:layout_height="50sp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="36dp"
                 android:layout_marginBottom="8dp"
                 android:textAlignment="viewStart"
                 android:textColor="@color/primaryTextColor"
@@ -53,10 +54,12 @@
                 android:id="@+id/post_imgvw_profile_poster"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/coloured_circle" />
 
             <ImageView

@@ -6,11 +6,14 @@ public class Post {
      String post;
      String userID;
      String dateAndTime;
+     String postID;
 
      public static final String DATEANDTIME = "dateAndTime";
 
     public Post() {
     }
+
+    public String getPostID() { return postID; }
 
     public String getUserID() { return userID; }
 
@@ -35,4 +38,6 @@ public class Post {
     public void setUserID(String userID) { this.userID = userID; }
 
     public void setDateAndTime(String dateAndTime) { this.dateAndTime = dateAndTime; }
+
+    public void setPostID(String postID) { this.postID = postID; }
 }
