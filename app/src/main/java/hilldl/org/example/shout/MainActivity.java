@@ -1,15 +1,17 @@
 package hilldl.org.example.shout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import hilldl.org.example.shout.ui.main.MainFragment1;
+import hilldl.org.example.shout.ui.main.MainFragment2;
+import hilldl.org.example.shout.ui.main.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -20,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: starts");
         setContentView(R.layout.main_activity);
+
+        new ViewModelProvider(this).get(MainViewModel.class);
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

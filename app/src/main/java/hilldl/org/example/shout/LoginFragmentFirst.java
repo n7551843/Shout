@@ -116,7 +116,6 @@ public class LoginFragmentFirst extends Fragment {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         Log.d(TAG, "onDataChange: starts");
-                                        Iterable<DataSnapshot> children = snapshot.getChildren();
                                         mCorrectUser = snapshot.getValue(User.class);
                                         mCorrectUser.setUserID(userId);
 

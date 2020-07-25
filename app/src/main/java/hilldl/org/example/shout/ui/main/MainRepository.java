@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import hilldl.org.example.shout.entities.Post;
+import hilldl.org.example.shout.entities.User;
 
 public class MainRepository {
     private static final String TAG = "MainRepository";
@@ -26,7 +27,11 @@ public class MainRepository {
     }
 
     public void refreshData () {
-        MainPostDatabase.refreshData();
+        database.refreshData();
+    }
+
+    public MutableLiveData<User> getUserData() {
+        return database.getUserData();
     }
 
     /**
