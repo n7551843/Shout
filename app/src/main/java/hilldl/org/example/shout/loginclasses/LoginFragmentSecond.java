@@ -1,4 +1,4 @@
-package hilldl.org.example.shout;
+package hilldl.org.example.shout.loginclasses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import hilldl.org.example.shout.MainActivity;
+import hilldl.org.example.shout.R;
+import hilldl.org.example.shout.RetrieveData;
 import hilldl.org.example.shout.entities.User;
 
 public class LoginFragmentSecond extends Fragment {

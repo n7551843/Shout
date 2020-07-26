@@ -50,7 +50,8 @@ public class MainPostDatabase {
 
     /**
      * Calls an instance of the singleton class MainPostDatabase.  If no instance exists, this
-     * method will create one, otherwise it will return the instance.
+     * method will create one, assign it to instance and return it. If one exists,
+     * it will return the instance.
      *
      * This method is thread-safe.
      * @return
@@ -58,10 +59,9 @@ public class MainPostDatabase {
 
     public static synchronized MainPostDatabase getInstance() {
         if (instance == null) {
-            return new MainPostDatabase();
-        } else {
-            return instance;
+            instance = new MainPostDatabase();
         }
+        return instance;
     }
 
     /**

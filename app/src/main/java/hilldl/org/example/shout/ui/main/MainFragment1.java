@@ -1,13 +1,9 @@
 package hilldl.org.example.shout.ui.main;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,24 +18,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.List;
 
 import hilldl.org.example.shout.MainAdapter;
 import hilldl.org.example.shout.entities.Post;
 import hilldl.org.example.shout.R;
-import hilldl.org.example.shout.RetrieveData;
 import hilldl.org.example.shout.entities.User;
 
-public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallbacks {
+public class MainFragment1 extends Fragment {
 
     private static final String TAG = "MainFragment";
     private MainViewModel mViewModel;
@@ -47,6 +33,12 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
     private User mUser;
     private RecyclerView rv;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    private Activity mActivity;
+
+    public interface Callback {
+        void hideFab();
+        void showFab();
+    }
 
     public static MainFragment1 newInstance() {
         return new MainFragment1();
@@ -64,6 +56,9 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
         // set up SwipeRefreshLayout
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 
+        // set up callback for showing/hiding fab
+        retrieveCallbackActivity();
+
         //Return the created view
         return view;
     }
@@ -74,6 +69,8 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
+        mAdapter = new MainAdapter(mViewModel.getAllPosts().getValue());
+
         //Retrieve the user data for the current user
         mViewModel.getUserData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
@@ -81,10 +78,10 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
                 Log.d(TAG, "onChanged: user details have updated");
                 Log.d(TAG, "onChanged: user is " + user.toString());
                 mUser = user;
+                mAdapter.setUserID(mUser.getUserID());
             }
         });
 
-        mAdapter = new MainAdapter(mViewModel.getAllPosts().getValue(), this);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         rv.setAdapter(mAdapter);
 
@@ -92,7 +89,6 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
             @Override
             public void onRefresh() {
                 mViewModel.refreshData();
-
             }
         });
 
@@ -107,13 +103,23 @@ public class MainFragment1 extends Fragment implements MainAdapter.AdapterCallba
                 }
             }
         });
+    }
 
-
+    public void retrieveCallbackActivity() {
+        //Called in onCreateView
+        mActivity = requireActivity();
+        if (!(mActivity instanceof Callback)) {
+            throw new InstantiationError("The activity hosting this fragment must contain callback methods");
+        } else {
+            ((Callback) mActivity).showFab();
+        }
     }
 
     @Override
-    public void deletePost(String postDate) {
-        //TODO delete this stub
+    public void onDetach() {
+        ((Callback) mActivity).hideFab();
+        mActivity = null;
+        super.onDetach();
     }
 }
 

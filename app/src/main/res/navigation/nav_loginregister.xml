@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragmentInitialize">
     <fragment
         android:id="@+id/fragment_login_first"
-        android:name="hilldl.org.example.shout.LoginFragmentFirst"
+        android:name="hilldl.org.example.shout.loginclasses.LoginFragmentFirst"
         android:label="fragment_login_first">
         <action
             android:id="@+id/action_loginFragmentv2_to_loginFragment_Register"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_login_second"
-        android:name="hilldl.org.example.shout.LoginFragmentSecond"
+        android:name="hilldl.org.example.shout.loginclasses.LoginFragmentSecond"
         android:label="fragment_login_second"
         tools:layout="@layout/login_fragment_second">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragmentInitialize"
-        android:name="hilldl.org.example.shout.LoginFragmentSplash"
+        android:name="hilldl.org.example.shout.loginclasses.LoginFragmentSplash"
         android:label="fragment_login_initialize"
         tools:layout="@layout/login_fragment_splash" >
         <action

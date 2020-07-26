@@ -18,16 +18,10 @@ import hilldl.org.example.shout.entities.Post;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
     private static final String TAG = "MainAdapter";
     private List<Post> mPostList;
-    private String mFirebaseUser;
-    private AdapterCallbacks mCallbacks;
+    private String mUserID;
 
-    public interface AdapterCallbacks {
-         void deletePost(String postDate);
-    }
-
-    public MainAdapter(List<Post> postList, AdapterCallbacks callback) {
+    public MainAdapter(List<Post> postList) {
         mPostList = postList;
-        mCallbacks = callback;
     }
 
     @NonNull
@@ -52,10 +46,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         holder.dateOfPost = post.getDateAndTime();
 
 
-//        // If The current user matches the User ID of the Poster, make delete button visible.
-//        if (user1.equals(mFirebaseUser)) {
-//            holder.selfPostIdentifier.setVisibility(View.VISIBLE);
-//        }
+        // If The current user matches the User ID of the Poster, make delete button visible.
+        if (mUserID != null) {
+            if (user1.equals(mUserID)) {
+                holder.selfPostIdentifier.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -85,4 +81,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void setUserID(String id) {
+        mUserID = id;
+    }
 }

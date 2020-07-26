@@ -1,4 +1,4 @@
-package hilldl.org.example.shout;
+package hilldl.org.example.shout.loginclasses;
 
 import android.os.Bundle;
 
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+
+import hilldl.org.example.shout.R;
 
 /**
  * A simple {@link Fragment} subclass.

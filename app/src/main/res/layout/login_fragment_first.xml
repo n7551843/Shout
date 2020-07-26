@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lgnfirst_constraintLayout"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
-    tools:context="LoginFragmentFirst">
+    tools:context=".loginclasses.LoginFragmentFirst">
 
     <TextView
         android:id="@+id/tv_title"
