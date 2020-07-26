@@ -3,15 +3,12 @@ package hilldl.org.example.shout.loginclasses;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,21 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import hilldl.org.example.shout.MainActivity;
 import hilldl.org.example.shout.R;
-import hilldl.org.example.shout.RetrieveData;
-import hilldl.org.example.shout.entities.User;
-import hilldl.org.example.shout.ui.main.MainPostDatabase;
 
 
 public class LoginFragmentFirst extends Fragment {
@@ -143,8 +127,8 @@ public class LoginFragmentFirst extends Fragment {
      */
 
     private void authenticationFailed() {
-        if (mViewModel.getLoginException() != null) {
-            incorrectDetailsTxtVw.setText(mViewModel.getLoginException().toString());
+        if (mViewModel.getAuthenticationException() != null) {
+            incorrectDetailsTxtVw.setText(mViewModel.getAuthenticationException().toString());
             incorrectDetailsTxtVw.setVisibility(View.VISIBLE);
         }
         Toast.makeText(requireActivity(), "Authentication failed.",

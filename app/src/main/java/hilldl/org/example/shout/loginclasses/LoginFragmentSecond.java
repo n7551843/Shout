@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -32,6 +35,7 @@ import hilldl.org.example.shout.entities.User;
 public class LoginFragmentSecond extends Fragment {
 
     private static final String TAG = "LoginFragmentSecond";
+    private LoginViewModel mViewModel;
     TextView txtvw_name;
     TextView txtvw_email;
     TextView txtvw_password;
@@ -39,28 +43,15 @@ public class LoginFragmentSecond extends Fragment {
     TextView txtvw_nomatch;
     Button btn_register;
     Button returnButton;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase db;
     private boolean passwordsMatch;
 
     public LoginFragmentSecond() {
         // Required empty public constructor
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance(); //Initiate FirebaseAuthority
-        db = FirebaseDatabase.getInstance();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        LoginActivityViewModel model = new ViewModelProvider(requireActivity()).get(LoginActivityViewModel.class);
-//        mLoginList = model.getData().getValue();
-
         passwordsMatch = true;
 
         // Inflate the layout for this fragment
@@ -72,9 +63,36 @@ public class LoginFragmentSecond extends Fragment {
         txtvw_nomatch = view.findViewById(R.id.txtvw_password_no_match);
         btn_register = view.findViewById(R.id.btn_register);
         returnButton = view.findViewById(R.id.button_return_to_login);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        mViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        mViewModel.getRegistrationStatus().observe(getViewLifecycleOwner(), new Observer<RegistrationStatus>() {
+            @Override
+            public void onChanged(RegistrationStatus registrationStatus) {
+                switch (registrationStatus) {
+                    case IDLE:
+                        btn_register.setEnabled(true);
+                        break;
+                    case PENDING:
+                        btn_register.setEnabled(false);
+                        break;
+                    case SUCCESSFUL:
+                        registrationSuccessful();
+                        break;
+                    case FAILED:
+                        registrationFailed();
+                        btn_register.setEnabled(true);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unrecognised LoginStatus received");
+                }
+            }
+        });
 
         // set onClickListener for button to return to Login Page.
-
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +102,6 @@ public class LoginFragmentSecond extends Fragment {
         });
 
         // set onClickListener for button to register an address.
-
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,21 +121,20 @@ public class LoginFragmentSecond extends Fragment {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     txtvw_email.setError("Please enter a valid email address.");
                 } else {
-                    txtvw_email.setError(null);
                     validateEmail(name, email, password, repassword);
                 }
             }
         });
-
-        return view;
+        super.onActivityCreated(savedInstanceState);
     }
 
     /**
      * Final check to make sure new password and repassword match, before attempting to register the
      * email with FireBase by calling the registerEmailWithFirebase method and passing it email and password
-     * @param alias - the name entered into the Name textview, grabbed in the onClickListener.
-     * @param email - the email entered into the Email textview, grabbed in the onClickListener.
-     * @param password - the password entered into the Password textview, grabbed in the onClickListener.
+     *
+     * @param alias      - the name entered into the Name textview, grabbed in the onClickListener.
+     * @param email      - the email entered into the Email textview, grabbed in the onClickListener.
+     * @param password   - the password entered into the Password textview, grabbed in the onClickListener.
      * @param repassword - the re-enter password entered into the RePassword textview, grabbed in the onClickListener.
      */
 
@@ -136,7 +152,6 @@ public class LoginFragmentSecond extends Fragment {
         }
     }
 
-
     /**
      * This method called internally once the email and password have been checked with regular expression.
      * Note: the checks mentioned below occur in the button's OnClickListener.
@@ -145,55 +160,25 @@ public class LoginFragmentSecond extends Fragment {
      * @param password - is the new password, also once it has been checked.
      */
 
-    private void registerEmailWithFirebase(String email, String password, String alias) {
-        //TODO put in Null Check for mAuth
+    private void registerEmailWithFirebase(String email, String password, String nickname) {
         Log.d(TAG, "registerEmailWithFirebase: begins");
-        final String nicknameForSave = alias;
-        final String passwordForSave = password;
-        final String emailForSave = email;
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(),
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+        mViewModel.registerEmailWithFirebase(email, password, nickname);
+    }
 
-                                    if (task.isSuccessful()) {
-                                        // Registration success, Create new User on db with
-                                        // the User's UID
-                                        Log.d(TAG, "createUserWithEmail:success");
+    private void registrationSuccessful() {
+        Log.d(TAG, "registrationSuccessful: starting MainActivity");
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
 
-                                        // Step 1 - Get all user info and put into a User.class object
-                                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                                        String userID = firebaseUser.getUid();
-                                        Log.d(TAG, "onComplete: current user is " + userID);
-                                        User user = new User();
-                                        user.setUserID(userID);
-                                        user.setNickname(nicknameForSave);
-                                        user.setEmail(emailForSave);
-                                        user.setPassword(passwordForSave);
-
-                                        // Step 2 - add the new user to the database and set the
-                                        // value of their UID to the User object created above
-                                        db.getReference().child(RetrieveData.ALLUSERS).child(userID).setValue(user);
-
-                                        // Step 3 - start a new activity and send it the User object
-                                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                                        intent.putExtra(User.USER, user);
-                                        startActivity(intent);
-
-                                    } else {
-                                        Log.d(TAG, "onComplete: createUserWithEmail:failure", task.getException());
-                                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                            txtvw_nomatch.setVisibility(View.VISIBLE);
-                                            txtvw_nomatch.setText(R.string.tooltip_email_already_used);
-                                        }
-                                        Toast.makeText(requireActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        //TODO (eventually) catch all the exceptions and set appropriate errors
-                                    }
-
-                            }
-                        });
-                }
-
+    private void registrationFailed() {
+//        Log.d(TAG, "registrationFailed: failed");
+//        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+//            txtvw_nomatch.setVisibility(View.VISIBLE);
+//            txtvw_nomatch.setText(R.string.tooltip_email_already_used);
+//        }
+        Toast.makeText(requireActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+        //TODO (eventually) catch all the exceptions and set appropriate errors
 
     }
+}
