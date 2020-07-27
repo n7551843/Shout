@@ -1,5 +1,7 @@
 package hilldl.org.example.shout.loginclasses;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
